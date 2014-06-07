@@ -116,7 +116,7 @@ def configureSite(config):
         siteConfig = json.loads(siteConfigContents)
 
         # Change data path to config
-        siteConfig["course_data_path"] = config.dataPath
+        siteConfig["course_data_path"] = path.abspath(config.dataPath)
 
     except:
         raise Exception("Could not parse site config file")
@@ -170,7 +170,12 @@ def createClassFile(config):
 
 # Symlink /var/www/hws to the site
 def linkApache(config):
-    native.elevatedRecreateSymlink(path.join(config.sitePath,"public"), path.join(config.environment.apachewww,"hws"))
+    # This is the path to the public directory that students access
+    publicPath = path.abspath(path.join(config.sitePath,"public"))
+
+    print "Creating symlink from /var/www/hws to ", publicPath
+
+    native.elevatedRecreateSymlink(publicPath, path.join(config.environment.apachewww,"hws"))
 
 if __name__ == "__main__":
 
