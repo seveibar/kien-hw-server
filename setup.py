@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 # Script for performing all setup operations
+# This will take care of cloning and setting up the site with a default course
 
 import json
 import sys
