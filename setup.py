@@ -116,7 +116,7 @@ def configureSite(config):
         siteConfig = json.loads(siteConfigContents)
 
         # Change data path to config
-        siteConfig["course_data_path"] = path.abspath(config.dataPath)
+        siteConfig["course_data_path"] = path.abspath(path.join(config.dataPath, "coursedata"))
         siteConfig["submissions_path"] = path.abspath(path.join(config.dataPath, "submissions"))
 
     except:
