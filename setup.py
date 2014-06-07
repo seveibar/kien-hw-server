@@ -28,8 +28,6 @@ def runSetup(configPath, removePrevious):
     # Remove previous directories (on user request)
     if removePrevious: removePreviousDirectories(config)
 
-    print setup.exceptions
-
     # Check for previous directories
     if path.exists(config.dataPath):
         raise setup.exceptions.DataDirectoryExists()
