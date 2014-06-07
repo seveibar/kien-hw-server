@@ -1,4 +1,5 @@
 {
+    "development": true,
     "sitePath":"site",
     "dataPath":"data",
     "courseName":"default-course",
