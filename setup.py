@@ -43,10 +43,14 @@ def runSetup(configPath, removePrevious):
 
     # Create site
     cloneSite(config)
+    configureSite(config)
 
     # Symlink /var/www/hws to the site
     if config.environment.apachewww != "":
         linkApache(config)
+
+    # Setup course
+    createClassFile(config)
 
 # Returns new Config object from config loaded from configPath
 def loadConfig(configPath):
@@ -66,12 +70,18 @@ def removePreviousDirectories(config):
 # DATA_DIR
 #     | -> code
 #     | -> bin
-#           |  -> hwconfig
+#           | -> hwconfig
+#     | -> coursedata
+#           | -> results
+#     | -> submissions
 def createDataDirectory(dataPath):
     native.createDirectory(dataPath)
     native.createDirectory(path.join(dataPath,"code"))
     native.createDirectory(path.join(dataPath,"bin"))
     native.createDirectory(path.join(dataPath,"bin","hwconfig"))
+    native.createDirectory(path.join(dataPath, "submissions"))
+    native.createDirectory(path.join(dataPath, "coursedata"))
+    native.createDirectory(path.join(dataPath, "coursedata", "results"))
 
 # Clones base repo code into data directory
 def cloneBaseCode(config):
@@ -84,6 +94,79 @@ def cloneSite(config):
     clonePath = config.sitePath
     print "Cloning remote site repository (" + config.remote.site + ") into ", clonePath
     native.gitClone(config.environment.git, config.remote.site,clonePath)
+
+#
+def configureSite(config):
+    print "Configuring site"
+
+    siteConfigPath = path.join(config.sitePath, "config.json")
+
+    print "Modifiying ",siteConfigPath
+
+    try:
+        # Read default site configuration
+        fi = open(siteConfigPath,'r')
+        siteConfigContents = fi.read()
+        fi.close()
+    except:
+        raise Exception("Error reading site config file")
+
+    try:
+        # Parse site config
+        siteConfig = json.loads(siteConfigContents)
+
+        # Change data path to config
+        siteConfig["course_data_path"] = config.dataPath
+
+    except:
+        raise Exception("Could not parse site config file")
+
+    try:
+        # Overwrite old site config
+        fi = open(siteConfigPath, 'w')
+        json.dump(siteConfig, fi,indent=4)
+        fi.close()
+
+    except:
+        raise Exception("Error writing to site config file")
+
+# Creates class.json file inside course data directory by loading the default
+# class.json file and changing the "course_name" field to match the config
+def createClassFile(config):
+    print "Creating class file"
+
+    defaultClassFilePath = path.join("examples","defaults","class.json")
+    destClassFilePath = path.join(config.dataPath,"coursedata","class.json")
+
+    print "Parsing ",defaultClassFilePath, " and writing to ", destClassFilePath
+
+    try:
+        # Read default class file
+        fi = open(defaultClassFilePath,'r')
+        exampleClassContents = fi.read()
+        fi.close()
+
+    except:
+        raise Exception("Error reading example class file")
+
+    try:
+        # Parse example class file
+        classfile = json.loads(exampleClassContents)
+
+        # Change values specific to this config
+        classfile["course_name"] = config.courseName
+
+    except:
+        raise Exception("Could not parse example class file")
+
+    try:
+        # Output new class file into course data directory
+        fi = open(destClassFilePath, 'w')
+        json.dump(classfile, fi,indent=4)
+        fi.close()
+
+    except:
+        raise Exception("Error writing to course data class file")
 
 # Symlink /var/www/hws to the site
 def linkApache(config):

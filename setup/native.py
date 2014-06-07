@@ -23,11 +23,18 @@ def createDirectory(path):
     print "Creating directory: ", path
     os.mkdir(path)
 
+# Copy file
+def copyFile(source,dest):
+    print "Copying file from ",source,"to",dest
+    shutil.copyfile(source,dest)
+
 # Do a git clone
 def gitClone(gitExecutable, repoAddr, outputPath):
     callShell([gitExecutable, "clone", repoAddr, outputPath],stdout=True)
 
-# Elevated recreate symlink
+# Elevated recreate symlink (used for copying site path into /var/www/hws)
+# This is a bit hacky, but the end-user generally a default ubuntu installation
+# so it should work most of the time
 def elevatedRecreateSymlink(source, dest):
     callShell(["sudo","rm",dest], stdout=True)
     callShell(["sudo","ln","-s",source,dest], stdout=True)
