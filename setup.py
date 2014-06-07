@@ -117,6 +117,7 @@ def configureSite(config):
 
         # Change data path to config
         siteConfig["course_data_path"] = path.abspath(config.dataPath)
+        siteConfig["submissions_path"] = path.abspath(path.join(config.dataPath, "submissions"))
 
     except:
         raise Exception("Could not parse site config file")
