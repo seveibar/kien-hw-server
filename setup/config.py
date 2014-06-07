@@ -21,6 +21,12 @@ class Config:
     # Name of course
     courseName = "default-course"
 
+    # Environment details (where git is installed etc.)
+    environment = None
+
+    # Remote repository details (base and site repo urls )
+    remote = None
+
     def __init__(self, configPath):
         print "Loading config: ", configPath
 
@@ -45,6 +51,49 @@ class Config:
         # Config parsed and loaded successfully into self.content
 
         # Extract the configuration values we need
-        self.sitePath = self.content.get("sitePath",self.sitePath)
+        self.sitePath = getOrDie(self.content,"sitePath")
         self.dataPath = self.content.get("dataPath",self.dataPath)
         self.courseName = self.content.get("courseName",self.courseName)
+        self.environment = EnvironmentConfig(
+            getOrDie(self.content, "environment.git"),
+            getOrDie(self.content, "environment.apachewww"))
+        self.remote = RemoteConfig(
+            getOrDie(self.content, "remote.site"),
+            getOrDie(self.content, "remote.base")
+        )
+
+# Object for storing remote configuration
+class RemoteConfig:
+    site = None
+    base = None
+    def __init__(self,site,base):
+        self.site = site
+        self.base = base
+
+# Object for storing environment configuration
+class EnvironmentConfig:
+    git = None
+    apachewww = None
+    def __init__(self,git,apachewww):
+        self.git = git
+        self.apachewww = apachewww
+
+# UTILITY FUNCTION
+# Get property from JSON object or die
+# This function also excepts nested properties e.g. remote.base
+def getOrDie(data, key):
+    objects = key.split(".")
+    if len(objects) == 1:
+        # If key exists return it, otherwise throw exception
+        if key in data:
+            return data[key]
+        else:
+            raise Exception("Config file is missing field: \"" + key + "\"")
+    else:
+        # Nested property
+        # If key exists, recursively call getOrDie until we're down to a
+        # single key, otherwise throw exception
+        if objects[0] in data:
+            return getOrDie(data[objects[0]],".".join(objects[1:]))
+        else:
+            raise Exception("Config file is missing field: \"" + key + "\"")

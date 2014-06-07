@@ -1,5 +1,13 @@
 {
     "sitePath":"site",
     "dataPath":"data",
-    "courseName":"default-course"
+    "courseName":"default-course",
+    "environment":{
+        "git":"/usr/bin/git",
+        "apachewww": ""
+    },
+    "remote": {
+        "site": "git@gitlab.seveibar.com:seve/rpi-hw-site.git",
+        "base": "git@gitlab.seveibar.com:seve/rpi-hw-base.git"
+    }
 }

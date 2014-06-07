@@ -5,6 +5,7 @@
 
 import subprocess
 import os
+import shutil
 from os import path
 
 # Returns the path to the setup
@@ -14,15 +15,35 @@ def getSetupPath():
 
 # Remove directory at path
 def removeDirectory(path):
-    raise NotImplementedError("REMOVE DIRECTORY")
+    print "Removing directory: ", path
+    shutil.rmtree(path)
+
+# Create directory at path
+def createDirectory(path):
+    print "Creating directory: ", path
+    os.mkdir(path)
+
+# Do a git clone
+def gitClone(gitExecutable, repoAddr, outputPath):
+    callShell([gitExecutable, "clone", repoAddr, outputPath],stdout=True)
+
+# Elevated recreate symlink
+def elevatedRecreateSymlink(source, dest):
+    callShell(["sudo","rm",dest], stdout=True)
+    callShell(["sudo","ln","-s",source,dest], stdout=True)
 
 # Calls shell to execute command and returns response or
-# None is there was an error
-# Note: ANY PROGRAM THAT USES THIS IS A DIRTY HACK
-def callShell(arguments,Shell=True):
+def callShell(arguments,Shell=True,stdout=False):
+    print "Shell call: ", " ".join(arguments)
+    arguments = " ".join(arguments) #HACK
     try:
         # Try to execute command
-        return subprocess.check_output(arguments)
+        if not stdout:
+            # return output
+            return subprocess.check_output(arguments,shell=Shell)
+        else:
+            #return error code
+            return subprocess.call(arguments,shell=True)
     except subprocess.CalledProcessError:
         # There was an error, return None
         return None

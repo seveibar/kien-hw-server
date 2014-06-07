@@ -21,8 +21,10 @@ def parseSetupArguments(defaultConfigPath=None,defaultRemovePrevious=None):
     parser.add_argument(
         "--remove-previous","-f",
         dest="removePrevious",
+        action="store_const",
         help="Remove previous data and site directories if they exist.",
-        default=defaultRemovePrevious)
+        const=True
+        )
 
     # Parse command line arguments
     return parser.parse_args()
