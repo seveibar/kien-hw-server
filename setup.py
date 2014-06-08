@@ -68,24 +68,21 @@ def removePreviousDirectories(config):
 # Create data directory structure
 # Should look something like...
 # DATA_DIR
-#     | -> code
-#           | -> hwconfig
-#     | -> bin
+#     | -> assignments
 #     | -> coursedata
 #           | -> results
 #     | -> submissions
+#     | -> [base]
 def createDataDirectory(dataPath):
     native.createDirectory(dataPath)
-    native.createDirectory(path.join(dataPath,"code"))
-    native.createDirectory(path.join(dataPath,"code","hwconfig"))
-    native.createDirectory(path.join(dataPath,"bin"))
+    native.createDirectory(path.join(dataPath,"assignments"))
     native.createDirectory(path.join(dataPath, "submissions"))
     native.createDirectory(path.join(dataPath, "coursedata"))
     native.createDirectory(path.join(dataPath, "coursedata", "results"))
 
 # Clones base repo code into data directory
 def cloneBaseCode(config):
-    clonePath = path.join(config.dataPath, "code","rcos")
+    clonePath = path.join(config.dataPath, "base")
     print "Cloning remote base repository (" + config.remote.base + ") into ", clonePath
     native.gitClone(config.environment.git, config.remote.base,clonePath)
 
