@@ -51,12 +51,6 @@ def createUser(config, args):
         # Copy user assignment settings
         native.copyFile(defaultUserConfigPath, path.join(submissionsPath,"user_assignment_settings.json"))
 
-    # print "Copying default user assignment config to user directory"
-    #
-    # defaultUserConfigPath = path.join("examples","defaults","user_assignment_config.json")
-    # outputUserConfigPath = path.join(config.dataPath,"submissions",args[0], "user_assignment_config.json")
-    #
-    # native.copyFile(defaultUserConfigPath, outputUserConfigPath)
 
 
 # When called from command line, parse arguments and feed to runTest, which
