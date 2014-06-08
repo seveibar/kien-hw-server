@@ -78,6 +78,49 @@ class EnvironmentConfig:
         self.git = git
         self.apachewww = apachewww
 
+
+class ClassConfig:
+
+    # Stores raw json for class config file
+    content = None
+
+    # List of string assignment names
+    assignments = None
+
+    # The default assignment when the page is loaded (usually the last assignment)
+    defaultAssignment = None
+
+    # Name of the course
+    courseName = None
+
+    def __init__(self, classConfigPath):
+        print "Loading class config: ", classConfigPath
+
+        # Attempt to load config file
+        raw_json = None
+        if path.isfile(classConfigPath):
+            try:
+                raw_json = open(classConfigPath).read()
+            except:
+                raise Exception("Error reading class config file")
+        else:
+            raise Exception("Class config file does not exist")
+
+        # Config loaded
+
+        # Attempt to parse config file
+        try:
+            self.content = json.loads(raw_json)
+        except e:
+            raise [Exception("Error parsing config file"),e]
+
+        # Config parsed and loaded successfully into self.content
+
+        # Extract the configuration values we need
+        self.assignments = getOrDie(self.content, "assignments")
+        self.defaultAssignment = getOrDie(self.content, "default_assignment")
+        self.courseName = getOrDie(self.content, "course_name")
+
 # UTILITY FUNCTION
 # Get property from JSON object or die
 # This function also excepts nested properties e.g. remote.base

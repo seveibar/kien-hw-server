@@ -2,7 +2,7 @@
 from os import path
 
 from testing.commandLineParser import *
-from setup.config import Config
+from setup.config import Config, ClassConfig
 import setup.native as native
 
 # Path to setup configuration file
@@ -28,18 +28,35 @@ def runTest(configPath, action, args):
 def createUser(config, args):
     if len(args) != 1 : raise Exception("Create user requires 1 argument: name")
 
-    print "Creating user \""+args[0]+"\""
+    username = args[0]
 
-    print "Creating user directory within submissions"
+    print "Creating user \""+username+"\""
 
-    native.createDirectory(path.join(config.dataPath,"submissions",args[0]))
+    # Get class configuration
+    course = ClassConfig(path.join(config.dataPath,"coursedata","class.json"))
 
-    print "Copying default user assignment config to user directory"
+    print "Creating user submission directory for each assignment then populating with user submission settings file"
 
-    defaultUserConfigPath = path.join("examples","defaults","user_assignment_config.json")
-    outputUserConfigPath = path.join(config.dataPath,"submissions",args[0], "user_assignment_config.json")
+    defaultUserConfigPath = path.join("examples","defaults","user_assignment_settings.json")
 
-    native.copyFile(defaultUserConfigPath, outputUserConfigPath)
+    # Loop through assignments and configure user submission directory
+    for assignment in course.assignments:
+
+        # Path to the assignment submission: data/submissions/ASSIGNMENT/USER
+        submissionsPath = path.join(config.dataPath, "submissions",assignment, username)
+
+        # Create user submissions directory
+        native.createDirectory(submissionsPath)
+
+        # Copy user assignment settings
+        native.copyFile(defaultUserConfigPath, path.join(submissionsPath,"user_assignment_settings.json"))
+
+    # print "Copying default user assignment config to user directory"
+    #
+    # defaultUserConfigPath = path.join("examples","defaults","user_assignment_config.json")
+    # outputUserConfigPath = path.join(config.dataPath,"submissions",args[0], "user_assignment_config.json")
+    #
+    # native.copyFile(defaultUserConfigPath, outputUserConfigPath)
 
 
 # When called from command line, parse arguments and feed to runTest, which
