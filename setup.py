@@ -69,16 +69,16 @@ def removePreviousDirectories(config):
 # Should look something like...
 # DATA_DIR
 #     | -> code
-#     | -> bin
 #           | -> hwconfig
+#     | -> bin
 #     | -> coursedata
 #           | -> results
 #     | -> submissions
 def createDataDirectory(dataPath):
     native.createDirectory(dataPath)
     native.createDirectory(path.join(dataPath,"code"))
+    native.createDirectory(path.join(dataPath,"code","hwconfig"))
     native.createDirectory(path.join(dataPath,"bin"))
-    native.createDirectory(path.join(dataPath,"bin","hwconfig"))
     native.createDirectory(path.join(dataPath, "submissions"))
     native.createDirectory(path.join(dataPath, "coursedata"))
     native.createDirectory(path.join(dataPath, "coursedata", "results"))
