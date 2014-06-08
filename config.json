@@ -5,7 +5,7 @@
     "courseName":"default-course",
     "environment":{
         "git":"/usr/bin/git",
-        "apachewww": ""
+        "apachewww": "/var/www"
     },
     "remote": {
         "site": "git@gitlab.seveibar.com:seve/rpi-hw-site.git",
