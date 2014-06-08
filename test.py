@@ -18,6 +18,8 @@ def runTest(configPath, action, args):
     # Match supplied string action to function
     if action == "create_user":
         createUser(config, args)
+    else if action == "create_test_assignment":
+        createTestAssignment(config, args)
     else:
         print "Please see usage (-h)"
 
@@ -51,7 +53,9 @@ def createUser(config, args):
         # Copy user assignment settings
         native.copyFile(defaultUserConfigPath, path.join(submissionsPath,"user_assignment_settings.json"))
 
-
+# Creates and sets up an assignmnet
+def createTestAssignment(config, args):
+    pass
 
 # When called from command line, parse arguments and feed to runTest, which
 # will take care of running the commands specified
