@@ -1,0 +1,39 @@
+{
+    "id": "hw1",
+    "name": "Homework One",
+    "max_submissions": 20,
+    "due_date" : "2012-07-08 11:59:0.0",
+    "testcases": [
+        {
+            "title": "Readme",
+            "details": "",
+            "compile": "",
+            "run": "",
+            "grade": "instructor/core/checkReadme",
+            "points": 2,
+            "hidden": "false",
+            "extracredit": "false"
+        },
+        {
+            "title": "Compilation",
+            "details": "",
+            "compile": "g++ student/main.cpp -o student/main",
+            "run": "",
+            "grade": "instructor/core/checkCompile",
+            "points": 3,
+            "hidden": false,
+            "extracredit": false
+        },
+        {
+            "title": "My Test Case",
+            "details": "",
+            "compile": "g++ student/main.cpp -o student/main",
+            "run": "student/main > results/main_output.txt",
+            "grade": "instructor/core/diff instructor/main_output.txt results/main_output.txt",
+            "points": 5,
+            "hidden": false,
+            "extracredit": false,
+            "deps": "Compilation"
+        }
+    ]
+}
