@@ -58,7 +58,7 @@ class Config:
 
         # Extract the configuration values we need
         self.sitePath = getOrDie(self.content,"sitePath")
-        self.basePath = getOrDie(self.content,"dataPath")
+        self.basePath = getOrDie(self.content,"basePath")
         self.tmpPath = getOrDie(self.content, "tmpPath")
         self.dataPath = self.content.get("dataPath",self.dataPath)
         self.courseName = self.content.get("courseName",self.courseName)
