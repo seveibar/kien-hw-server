@@ -18,6 +18,12 @@ class Config:
     # Path for the data directory
     dataPath = "data"
 
+    # Path for the base directory
+    basePath = "data/base"
+
+    # Path to temporary directory
+    tmpPath = "/tmp"
+
     # Name of course
     courseName = "default-course"
 
@@ -52,6 +58,8 @@ class Config:
 
         # Extract the configuration values we need
         self.sitePath = getOrDie(self.content,"sitePath")
+        self.basePath = getOrDie(self.content,"dataPath")
+        self.tmpPath = getOrDie(self.content, "tmpPath")
         self.dataPath = self.content.get("dataPath",self.dataPath)
         self.courseName = self.content.get("courseName",self.courseName)
         self.environment = EnvironmentConfig(

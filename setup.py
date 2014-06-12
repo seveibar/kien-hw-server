@@ -40,6 +40,7 @@ def runSetup(configPath, removePrevious):
 
     # Clone base code into data directory
     cloneBaseCode(config)
+    configureBase(config)
 
     # Create site
     cloneSite(config)
@@ -80,9 +81,9 @@ def createDataDirectory(dataPath):
     native.createDirectory(path.join(dataPath, "coursedata"))
     native.createDirectory(path.join(dataPath, "coursedata", "results"))
 
-# Clones base repo code into data directory
+# Clones base repo code to basePath
 def cloneBaseCode(config):
-    clonePath = path.join(config.dataPath, "base")
+    clonePath = config.basePath
     print "Cloning remote base repository (" + config.remote.base + ") into ", clonePath
     native.gitClone(config.environment.git, config.remote.base,clonePath)
 
@@ -92,7 +93,42 @@ def cloneSite(config):
     print "Cloning remote site repository (" + config.remote.site + ") into ", clonePath
     native.gitClone(config.environment.git, config.remote.site,clonePath)
 
-#
+# Configures base base.json file with relevant paths
+def configureBase(config):
+    print "Configuring Base"
+
+    # Path to configuration file for base
+    baseConfigPath = path.join(config.basePath,"base.json")
+
+    try:
+        # Read default site configuration
+        fi = open(baseConfigPath,'r')
+        baseConfigContents = fi.read()
+        fi.close()
+    except:
+        raise Exception("Error reading base config file")
+
+    try:
+        # Parse base config
+        baseConfig = json.loads(baseConfigContents)
+
+        # Change data path to config
+        baseConfig["dataPath"] = path.abspath(config.dataPath)
+        baseConfig["tmpPath"] = path.abspath(config.tmpPath)
+
+    except:
+        raise Exception("Could not parse base config file")
+
+    try:
+        # Overwrite old site config
+        fi = open(siteConfigPath, 'w')
+        json.dump(siteConfig, fi,indent=4)
+        fi.close()
+    except:
+        raise Exception("Error writing to base config file")
+
+
+# Configures site config.json file the relevant paths
 def configureSite(config):
     print "Configuring site"
 
