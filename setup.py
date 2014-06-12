@@ -100,6 +100,8 @@ def configureBase(config):
     # Path to configuration file for base
     baseConfigPath = path.join(config.basePath,"base.json")
 
+    print "Configuring base at", path.abspath(baseConfigPath)
+
     try:
         # Read default site configuration
         fi = open(baseConfigPath,'r')
@@ -121,8 +123,8 @@ def configureBase(config):
 
     try:
         # Overwrite old site config
-        fi = open(siteConfigPath, 'w')
-        json.dump(siteConfig, fi,indent=4)
+        fi = open(baseConfigPath, 'w')
+        json.dump(baseConfig, fi,indent=4)
         fi.close()
     except:
         raise Exception("Error writing to base config file")
