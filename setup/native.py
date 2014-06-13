@@ -23,6 +23,11 @@ def createDirectory(path):
     print "Creating directory: ", path
     os.mkdir(path)
 
+# Copy directory recursively
+def copyDirectory(source, dest):
+    print "Copying directory ", source , "to", dest
+    shutil.copytree(source,dest)
+
 # Copy file
 def copyFile(source,dest):
     print "Copying file from ",source,"to",dest

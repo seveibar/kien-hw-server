@@ -4,6 +4,7 @@ from os import path
 from testing.commandLineParser import *
 from setup.config import Config, ClassConfig
 import setup.native as native
+from subprocess import check_output as systemCall
 
 # Path to setup configuration file
 defaultConfigPath = path.join( native.getSetupPath() , "config.json" )
@@ -37,7 +38,8 @@ def createUser(config, args):
     # Get class configuration
     course = ClassConfig(path.join(config.dataPath,"coursedata","class.json"))
 
-    print "Creating user submission directory for each assignment then populating with user submission settings file"
+    print """Creating user submission directory for each assignment then
+             populating with user submission settings file"""
 
     defaultUserConfigPath = path.join("examples","defaults","user_assignment_settings.json")
 
@@ -54,8 +56,41 @@ def createUser(config, args):
         native.copyFile(defaultUserConfigPath, path.join(submissionsPath,"user_assignment_settings.json"))
 
 # Creates and sets up an assignmnet
+# Starts by calling create_new_assignment within base/bin, then replaces
+# the newly created directory with the specified example
 def createTestAssignment(config, args):
-    pass
+    # Check arguments
+    if len(args) != 2:
+        raise Exception("USAGE: create_test_assignment assignment_name example_name")
+
+    assignmentName = args[0]
+    exampleName = args[1]
+
+    # Path to example assignment
+    pathToExample = path.join("examples", "assignments", exampleName)
+
+    # Make sure example exists
+    if not path.exists(pathToExamples):
+        raise Exception("The specified example at "+pathToExample+" does not exist")
+
+    # Call base/bin/create_new_assignment with assignment name
+    try:
+        systemCall([createNewAssignmentPath, args[0]],Shell=True)
+    except:
+        print "Create assignment not successfully run!"
+        raise
+
+    # Path to the newly created assignment
+    pathToAssignment = path.join(config.dataPath, "assignments",assignmentName)
+
+    # Remove previous assignment directory
+    native.removeDirectory(pathToAssignment)
+
+    # Copy example into assignment directory
+    native.copyDirectory(pathToExample, pathToAssignment)
+
+
+
 
 # When called from command line, parse arguments and feed to runTest, which
 # will take care of running the commands specified
