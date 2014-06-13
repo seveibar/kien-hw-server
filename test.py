@@ -94,7 +94,28 @@ def createTestAssignment(config, args):
     # Copy example to where the newly created assignment was
     native.copyDirectory(pathToExample, pathToAssignment)
 
+    # Get path to the new assignment's configuration file
+    pathToAssignmentConfig = path.join(pathToAssignment, "assignment.json")
 
+    # Modify assignment.json name and id to original (generated) value
+    try:
+        # Open and read from assignment config
+        assignmentConfigFile = open(pathToAssignmentConfig,'r')
+        assignmentConfig = json.load(assignmentConfigFile)
+        assignmentConfigFile.close()
+
+        # Change id and name to assignmentName (the original values)
+        assignmentConfig["id"] = assignmentName
+        assignmentConfig["name"] = assignmentName
+
+        # Write new assignment config file
+        assignmentConfigFile = open(pathToAssignmentConfig,'w')
+        json.dump(assignmentConfig, assignmentConfigFile)
+        assignmentConfigFile.close()
+
+    except:
+        print "ERROR: Something bad happened when modifying assignment.json"
+        raise
 
 
 # When called from command line, parse arguments and feed to runTest, which
