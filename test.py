@@ -5,6 +5,7 @@ from testing.commandLineParser import *
 from setup.config import Config, ClassConfig
 import setup.native as native
 from subprocess import check_output as systemCall
+import json
 
 # Path to setup configuration file
 defaultConfigPath = path.join( native.getSetupPath() , "config.json" )
@@ -94,6 +95,8 @@ def createTestAssignment(config, args):
     # Copy example to where the newly created assignment was
     native.copyDirectory(pathToExample, pathToAssignment)
 
+    print "Reseting assignment id and name configuration values"
+
     # Get path to the new assignment's configuration file
     pathToAssignmentConfig = path.join(pathToAssignment, "assignment.json")
 
@@ -110,7 +113,7 @@ def createTestAssignment(config, args):
 
         # Write new assignment config file
         assignmentConfigFile = open(pathToAssignmentConfig,'w')
-        json.dump(assignmentConfig, assignmentConfigFile)
+        json.dump(assignmentConfig, assignmentConfigFile,indent=4)
         assignmentConfigFile.close()
 
     except:
