@@ -19,7 +19,7 @@ def runTest(configPath, action, args):
     # Match supplied string action to function
     if action == "create_user":
         createUser(config, args)
-    else if action == "create_test_assignment":
+    elif action == "create_test_assignment":
         createTestAssignment(config, args)
     else:
         print "Please see usage (-h)"
@@ -61,21 +61,26 @@ def createUser(config, args):
 def createTestAssignment(config, args):
     # Check arguments
     if len(args) != 2:
-        raise Exception("USAGE: create_test_assignment assignment_name example_name")
+        print "USAGE: create_test_assignment assignment_name example_name"
+        return;
 
     assignmentName = args[0]
     exampleName = args[1]
+
+    # Path to create_new_assignment executable
+    pathToCreateNewAssignment = path.join(config.basePath,"bin","create_new_assignment")
 
     # Path to example assignment
     pathToExample = path.join("examples", "assignments", exampleName)
 
     # Make sure example exists
-    if not path.exists(pathToExamples):
-        raise Exception("The specified example at "+pathToExample+" does not exist")
+    if not path.exists(pathToExample):
+        print "ERROR: The specified example at "+pathToExample+" does not exist"
+        return;
 
     # Call base/bin/create_new_assignment with assignment name
     try:
-        systemCall([createNewAssignmentPath, args[0]],Shell=True)
+        systemCall([pathToCreateNewAssignment, args[0]],shell=True)
     except:
         print "Create assignment not successfully run!"
         raise
@@ -83,10 +88,10 @@ def createTestAssignment(config, args):
     # Path to the newly created assignment
     pathToAssignment = path.join(config.dataPath, "assignments",assignmentName)
 
-    # Remove previous assignment directory
+    # Remove the newly created assignment directory
     native.removeDirectory(pathToAssignment)
 
-    # Copy example into assignment directory
+    # Copy example to where the newly created assignment was
     native.copyDirectory(pathToExample, pathToAssignment)
 
 
