@@ -81,7 +81,8 @@ def createTestAssignment(config, args):
 
     # Call base/bin/create_new_assignment with assignment name
     try:
-        systemCall([pathToCreateNewAssignment, args[0]],shell=True)
+        print "Calling \"base/bin/create_new_assignment " + assignmentName + '"'
+        systemCall(" ".join([pathToCreateNewAssignment, args[0]]),shell=True)
     except:
         print "Create assignment not successfully run!"
         raise

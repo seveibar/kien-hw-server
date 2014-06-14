@@ -19,7 +19,7 @@ def parseTestArguments(defaultConfigPath):
     parser.add_argument(
         "action",
         nargs="+",
-        help="Action to take. [ create_user ]"
+        help="Action to take. [ create_user, create_test_assignment]"
         )
 
     # Parse command line arguments
