@@ -1,11 +1,12 @@
 
 from os import path
+import json
+from datetime import datetime
 
 from testing.commandLineParser import *
 from setup.config import Config, ClassConfig
 import setup.native as native
 from subprocess import check_output as systemCall
-import json
 
 # Path to setup configuration file
 defaultConfigPath = path.join( native.getSetupPath() , "config.json" )
@@ -22,6 +23,8 @@ def runTest(configPath, action, args):
         createUser(config, args)
     elif action == "create_test_assignment":
         createTestAssignment(config, args)
+    elif action == "fake_upload":
+        fakeUploadSubmission(config, args)
     else:
         print "Please see usage (-h)"
 
@@ -119,6 +122,81 @@ def createTestAssignment(config, args):
 
     except:
         print "ERROR: Something bad happened when modifying assignment.json"
+        raise
+
+# Simulate uploading to the server, but without uploading to the server
+# This means directly adding the assignment to the submissions directory and
+# changing upload.json manually
+def fakeUploadSubmission(config, args):
+    if len(args) != 3:
+        raise Exception("USAGE: fake_upload assignment_name student path/from/examples/submissions")
+
+    print "Fake uploading to assignment \"" + args[0] + "\"" + \
+          " under student \"" + args[1] + "\" " + \
+          "with example submission " + args[2]
+
+    assignmentID = args[0]
+    student = args[1]
+    testSubmissionPath = path.join("examples","submissions",args[2])
+
+    # Get the path where this directory should be "uploaded" to, then figure
+    # out which submission number the student is on
+    uploadSubmissionDirectory = path.join(config.dataPath, "submissions",
+            assignmentID, student)
+
+    submissionNumber = None
+    uploadSubmissionPath = None
+
+    # Keep incrementing until a submission number is not found
+    for i in range(1,255):
+        uploadSubmissionPath = path.join(uploadSubmissionDirectory,  str(i))
+        if not path.exists(uploadSubmissionPath):
+            # This submission number was not found, this must be the last
+            # submission + 1
+            submissionNumber = i
+            print "Number of submissions:",i
+            break;
+
+    print "Copying test submission to submissions directory"
+
+    # Copy test submission to submissions directory
+    native.copyDirectory(testSubmissionPath, uploadSubmissionPath)
+
+    # Add submission to uploads.json
+
+    # Get path to uploads.json file
+    uploadFilePath = path.join(config.dataPath, "submissions", assignmentID,
+            "upload.json")
+
+    uploadFileData = {"submissions":[]}
+
+    # See if previous uploads.json exists (so we would need to append)
+    if path.exists(uploadFilePath):
+        try:
+            uploadFile = open(uploadFilePath)
+            uploadFileData = json.load(uploadFile)
+            uploadFile.close()
+        except:
+            print "ERROR: Could not read/parse upload file"
+            raise
+
+    # Get the new submission data to add
+    newSubmissionData = {
+        "submitTime": str(datetime.now()),
+        "student": student,
+        "submissionNumber": submissionNumber
+    }
+
+    # Add to submissions field of upload.json data
+    uploadFileData["submissions"].append(newSubmissionData)
+
+    # Write new submissions data to upload.json
+    try:
+        uploadFile = open(uploadFilePath, 'w')
+        json.dump(uploadFileData, uploadFile, indent=4)
+        uploadFile.close()
+    except:
+        print "ERROR: Error writing new json to upload.json file"
         raise
 
 
