@@ -166,7 +166,7 @@ def fakeUploadSubmission(config, args):
 
     # Get path to uploads.json file
     uploadFilePath = path.join(config.dataPath, "submissions", assignmentID,
-            "upload.json")
+            "uploads.json")
 
     uploadFileData = {"submissions":[]}
 
