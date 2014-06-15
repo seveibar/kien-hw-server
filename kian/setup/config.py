@@ -19,7 +19,10 @@ class Config:
     dataPath = "data"
 
     # Path for the base directory
-    basePath = "data/base"
+    basePath = "base"
+
+    # Path to kian directory (with examples, setup, testing etc.)
+    kianPath = "./"
 
     # Path to temporary directory
     tmpPath = "/tmp"
@@ -36,6 +39,9 @@ class Config:
     def __init__(self, configPath):
         print "Loading config: ", configPath
 
+        # config.json file is always contained with kian directory
+        self.kianPath = path.dirname(configPath)
+
         # Attempt to load config file
         raw_json = None
         if path.isfile(configPath):
@@ -51,8 +57,9 @@ class Config:
         # Attempt to parse config file
         try:
             self.content = json.loads(raw_json)
-        except e:
-            raise [Exception("Error parsing config file"),e]
+        except:
+            print "ERROR: Couldn't parse config file"
+            raise
 
         # Config parsed and loaded successfully into self.content
 
@@ -60,8 +67,8 @@ class Config:
         self.sitePath = getOrDie(self.content,"sitePath")
         self.basePath = getOrDie(self.content,"basePath")
         self.tmpPath = getOrDie(self.content, "tmpPath")
-        self.dataPath = self.content.get("dataPath",self.dataPath)
-        self.courseName = self.content.get("courseName",self.courseName)
+        self.dataPath = getOrDie(self.content, "dataPath")
+        self.courseName = getOrDie(self.content, "courseName")
         self.environment = EnvironmentConfig(
             getOrDie(self.content, "environment.git"),
             getOrDie(self.content, "environment.apachewww"))
@@ -69,6 +76,17 @@ class Config:
             getOrDie(self.content, "remote.site"),
             getOrDie(self.content, "remote.base")
         )
+
+        # Fix paths, they should all be relative to config path unless absolute
+        if not path.isabs(self.sitePath):
+            self.sitePath = path.join(self.kianPath, self.sitePath)
+        if not path.isabs(self.basePath):
+            self.basePath = path.join(self.kianPath, self.basePath)
+        if not path.isabs(self.tmpPath):
+            self.tmpPath = path.join(self.kianPath, self.tmpPath)
+        if not path.isabs(self.dataPath):
+            self.dataPath = path.join(self.kianPath, self.dataPath)
+
 
 # Object for storing remote configuration
 class RemoteConfig:

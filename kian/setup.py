@@ -71,15 +71,14 @@ def removePreviousDirectories(config):
 # DATA_DIR
 #     | -> assignments
 #     | -> coursedata
-#           | -> results
+#     | -> results
 #     | -> submissions
-#     | -> [base]
 def createDataDirectory(dataPath):
     native.createDirectory(dataPath)
     native.createDirectory(path.join(dataPath,"assignments"))
     native.createDirectory(path.join(dataPath, "submissions"))
     native.createDirectory(path.join(dataPath, "coursedata"))
-    native.createDirectory(path.join(dataPath, "coursedata", "results"))
+    native.createDirectory(path.join(dataPath, "results"))
 
 # Clones base repo code to basePath
 def cloneBaseCode(config):
@@ -171,7 +170,7 @@ def configureSite(config):
 def createClassFile(config):
     print "Creating class file"
 
-    defaultClassFilePath = path.join("examples","defaults","class.json")
+    defaultClassFilePath = path.join(config.kianPath, "examples","defaults","class.json")
     destClassFilePath = path.join(config.dataPath,"coursedata","class.json")
 
     print "Parsing ",defaultClassFilePath, " and writing to ", destClassFilePath
