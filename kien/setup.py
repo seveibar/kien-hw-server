@@ -68,6 +68,9 @@ def removePreviousDirectories(config):
     if path.exists(config.sitePath):
         print "Removing site directory"
         native.removeDirectory(config.sitePath)
+    if path.exists(config.basePath):
+        print "Removing base directory"
+        native.removeDirectory(config.basePath)
 
 
 # Create data directory structure
@@ -222,7 +225,7 @@ def linkApache(config):
 
 
 # Clean previous setup with same config
-def cleanSetup(config):
+def cleanSetup(configPath):
     # Get configuration  config (open and parse file at configPath)
     config = loadConfig(configPath)
 
