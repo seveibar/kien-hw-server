@@ -10,7 +10,7 @@
         "apachewww": ""
     },
     "remote": {
-        "site": "git@gitlab.seveibar.com:seve/kian-site.git",
-        "base": "git@gitlab.seveibar.com:seve/kian-base.git"
+        "site": "git@gitlab.seveibar.com:seve/kien-site.git",
+        "base": "git@gitlab.seveibar.com:seve/kien-base.git"
     }
 }
