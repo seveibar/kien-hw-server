@@ -1,9 +1,9 @@
 {
     "development": true,
-    "sitePath":"site",
-    "dataPath":"data",
-    "basePath":"data/base",
-    "tmpPath":"/tmp",
+    "sitePath":"../site",
+    "dataPath":"../data",
+    "basePath":"../base",
+    "tmpPath":"../tmp",
     "courseName":"default-course",
     "environment":{
         "git":"/usr/bin/git",
