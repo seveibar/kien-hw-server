@@ -15,10 +15,11 @@ from setup.commandLineParser import *
 import setup.exceptions
 
 # Path to setup configuration file
-defaultConfigPath = path.join( native.getSetupPath() , "config.json" )
+defaultConfigPath = path.join(native.getSetupPath(), "config.json")
 
 # Remove previous directories
 removePrevious = False
+
 
 # Main Setup Function, all calls basically originate from this function
 def runSetup(configPath, removePrevious):
@@ -53,9 +54,11 @@ def runSetup(configPath, removePrevious):
     # Setup course
     createClassFile(config)
 
+
 # Returns new Config object from config loaded from configPath
 def loadConfig(configPath):
     return Config(configPath)
+
 
 # Remove previous data and site directories (if they exist)
 def removePreviousDirectories(config):
@@ -65,6 +68,7 @@ def removePreviousDirectories(config):
     if path.exists(config.sitePath):
         print "Removing site directory"
         native.removeDirectory(config.sitePath)
+
 
 # Create data directory structure
 # Should look something like...
@@ -86,11 +90,13 @@ def cloneBaseCode(config):
     print "Cloning remote base repository (" + config.remote.base + ") into ", clonePath
     native.gitClone(config.environment.git, config.remote.base,clonePath)
 
+
 # Clones site repo code into sitePath
 def cloneSite(config):
     clonePath = config.sitePath
     print "Cloning remote site repository (" + config.remote.site + ") into ", clonePath
     native.gitClone(config.environment.git, config.remote.site,clonePath)
+
 
 # Configures base base.json file with relevant paths
 def configureBase(config):
@@ -165,6 +171,7 @@ def configureSite(config):
     except:
         raise Exception("Error writing to site config file")
 
+
 # Creates class.json file inside course data directory by loading the default
 # class.json file and changing the "course_name" field to match the config
 def createClassFile(config):
@@ -203,6 +210,7 @@ def createClassFile(config):
     except:
         raise Exception("Error writing to course data class file")
 
+
 # Symlink /var/www/hws to the site
 def linkApache(config):
     # This is the path to the public directory that students access
@@ -212,6 +220,15 @@ def linkApache(config):
 
     native.elevatedRecreateSymlink(publicPath, path.join(config.environment.apachewww,"hws"))
 
+
+# Clean previous setup with same config
+def cleanSetup(config):
+    # Get configuration  config (open and parse file at configPath)
+    config = loadConfig(configPath)
+
+    # Remove previous directories created by setup
+    removePreviousDirectories(config)
+
 if __name__ == "__main__":
 
     # Get command line arguments
@@ -219,5 +236,9 @@ if __name__ == "__main__":
         defaultConfigPath=defaultConfigPath,
         defaultRemovePrevious=removePrevious)
 
-    # Call setup to do the bulk of the work
-    runSetup(args.configPath, args.removePrevious)
+    if not args.clean:
+        # Call setup to do all setup operations
+        runSetup(args.configPath, args.removePrevious)
+    else:
+        # Clean previous setup installation
+        cleanSetup(args.configPath)
