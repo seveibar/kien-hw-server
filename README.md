@@ -1,4 +1,4 @@
-# High Level Design of RPI Homework Server
+# High Level Design of Kian Homework Server
 
 The homework server consists of three central parts.
 
@@ -12,7 +12,7 @@ The homework server consists of three central parts.
 ### Setup
 ***********************
 
-The setup scripts provided in the [main repository](http://gitlab.seveibar.com/seve/rpi-hw-server) set up a basic directory structure, this typically involves the creation of the [data directory](data-directory) and the cloning of both the [site](site-overview) and [base](base-overview) repos.
+The setup scripts provided in the [main repository](http://gitlab.seveibar.com/seve/kian-setup) set up a basic directory structure, this typically involves the creation of the [data directory](data-directory) and the cloning of both the [site](site-overview) and [base](base-overview) repos.
 
 ![setup-execution-high-overview](http://gitlab.seveibar.com/files/note/4/rpi-hw-overview.jpg)
 
