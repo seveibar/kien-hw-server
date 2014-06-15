@@ -10,7 +10,7 @@
         "apachewww": ""
     },
     "remote": {
-        "site": "git@gitlab.seveibar.com:seve/rpi-hw-site.git",
-        "base": "git@gitlab.seveibar.com:seve/rpi-hw-base-python.git"
+        "site": "git@gitlab.seveibar.com:seve/kian-site.git",
+        "base": "git@gitlab.seveibar.com:seve/kian-base.git"
     }
 }
