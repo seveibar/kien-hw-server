@@ -26,7 +26,7 @@ def createDirectory(path):
 # Copy directory recursively
 def copyDirectory(source, dest):
     print "Copying directory ", source , "to", dest
-    shutil.copytree(source,dest)
+    shutil.copytree(source, dest)
 
 # Copy file
 def copyFile(source,dest):
@@ -36,6 +36,16 @@ def copyFile(source,dest):
 # Do a git clone
 def gitClone(gitExecutable, repoAddr, outputPath):
     callShell([gitExecutable, "clone", repoAddr, outputPath],stdout=True)
+
+# Make a symlink
+def createSymlink(source, dest, absolute=True):
+    # Make symlink path absolute if the absolute flag is True
+    if absolute:
+        source = path.abspath(source)
+
+    print "Creating symlink from ", source, "to", dest
+
+    os.symlink(source, dest)
 
 # Elevated recreate symlink (used for copying site path into /var/www/hws)
 # This is a bit hacky, but the end-user generally a default ubuntu installation

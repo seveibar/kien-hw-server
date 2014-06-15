@@ -91,13 +91,24 @@ def createTestAssignment(config, args):
         raise
 
     # Path to the newly created assignment
-    pathToAssignment = path.join(config.dataPath, "assignments",assignmentName)
+    pathToAssignment = path.join(config.dataPath, "assignments", assignmentName)
 
     # Remove the newly created assignment directory
     native.removeDirectory(pathToAssignment)
 
     # Copy example to where the newly created assignment was
     native.copyDirectory(pathToExample, pathToAssignment)
+
+    # Add symlink for core library
+
+    # Path to core within base/lib (contains instructor utility functions)
+    coreLibPath = path.join(config.basePath, "lib", "core")
+
+    # Assignment core destination
+    assignmentCorePath = path.join(pathToAssignment, "instructor", "core")
+
+    # Create symlink for core library
+    native.createSymlink(coreLibPath, assignmentCorePath, absolute=True)
 
     print "Reseting assignment id and name configuration values"
 
