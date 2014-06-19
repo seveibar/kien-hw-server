@@ -6,7 +6,14 @@ import argparse
 # variables the user passed
 def parseTestArguments(defaultConfigPath):
 
-    parser = argparse.ArgumentParser(description='Perform test operations for RPI Homework Server e.g. creating users, uploading assignments')
+    parser = argparse.ArgumentParser(description="""
+Perform test operations for RPI Homework Server e.g.creating users, uploading assignments.
+Actions:
+    create_test_assignment
+    create_user (deprecated)
+    fake_upload
+    run_test
+    """)
 
     parser.add_argument(
         "--config","-c",
@@ -19,7 +26,7 @@ def parseTestArguments(defaultConfigPath):
     parser.add_argument(
         "action",
         nargs="+",
-        help="Action to take. [ create_user, create_test_assignment]"
+        help="Action to take."
         )
 
     # Parse command line arguments
