@@ -2,6 +2,7 @@
 
 import json
 from os import path
+from setup.native import getSetupPath
 
 # This class holds configuration details for setting up a homework server
 # environment
@@ -36,7 +37,11 @@ class Config:
     # Remote repository details (base and site repo urls )
     remote = None
 
-    def __init__(self, configPath):
+    def __init__(self, configPath=None):
+
+        if configPath is None:
+            configPath = path.join(getSetupPath(), "config.json")
+
         print "Loading config: ", configPath
 
         # config.json file is always contained with kian directory
@@ -146,6 +151,10 @@ class ClassConfig:
         self.assignments = getOrDie(self.content, "assignments")
         self.defaultAssignment = getOrDie(self.content, "default_assignment")
         self.courseName = getOrDie(self.content, "course_name")
+
+
+        return path.normpath(path.join(setup_directory, ".."))
+
 
 # UTILITY FUNCTION
 # Get property from JSON object or die
