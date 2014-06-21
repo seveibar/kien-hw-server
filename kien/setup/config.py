@@ -23,7 +23,7 @@ class Config:
     basePath = "base"
 
     # Path to kian directory (with examples, setup, testing etc.)
-    kianPath = "./"
+    kienPath = "./"
 
     # Path to temporary directory
     tmpPath = "/tmp"
@@ -45,7 +45,7 @@ class Config:
         print "Loading config: ", configPath
 
         # config.json file is always contained with kian directory
-        self.kianPath = path.dirname(configPath)
+        self.kienPath = path.dirname(configPath)
 
         # Attempt to load config file
         raw_json = None
@@ -69,8 +69,8 @@ class Config:
         # Config parsed and loaded successfully into self.content
 
         # Extract the configuration values we need
-        self.sitePath = getOrDie(self.content,"sitePath")
-        self.basePath = getOrDie(self.content,"basePath")
+        self.sitePath = getOrDie(self.content, "sitePath")
+        self.basePath = getOrDie(self.content, "basePath")
         self.tmpPath = getOrDie(self.content, "tmpPath")
         self.dataPath = getOrDie(self.content, "dataPath")
         self.courseName = getOrDie(self.content, "courseName")
@@ -84,13 +84,13 @@ class Config:
 
         # Fix paths, they should all be relative to config path unless absolute
         if not path.isabs(self.sitePath):
-            self.sitePath = path.join(self.kianPath, self.sitePath)
+            self.sitePath = path.normpath(path.join(self.kienPath, self.sitePath))
         if not path.isabs(self.basePath):
-            self.basePath = path.join(self.kianPath, self.basePath)
+            self.basePath = path.normpath(path.join(self.kienPath, self.basePath))
         if not path.isabs(self.tmpPath):
-            self.tmpPath = path.join(self.kianPath, self.tmpPath)
+            self.tmpPath = path.normpath(path.join(self.kienPath, self.tmpPath))
         if not path.isabs(self.dataPath):
-            self.dataPath = path.join(self.kianPath, self.dataPath)
+            self.dataPath = path.normpath(path.join(self.kienPath, self.dataPath))
 
 
 # Object for storing remote configuration

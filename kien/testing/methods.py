@@ -45,7 +45,7 @@ def createUser(config, args):
     print """Creating user submission directory for each assignment then
              populating with user submission settings file"""
 
-    defaultUserConfigPath = path.join(config.kianPath, "examples","defaults","user_assignment_settings.json")
+    defaultUserConfigPath = path.join(config.kienPath, "examples","defaults","user_assignment_settings.json")
 
     # Loop through assignments and configure user submission directory
     for assignment in course.assignments:
@@ -72,10 +72,10 @@ def createTestAssignment(config, args):
     exampleName = args[1]
 
     # Path to create_new_assignment executable
-    pathToCreateNewAssignment = path.join(config.basePath,"bin","create_new_assignment")
+    pathToCreateNewAssignment = path.join(config.basePath, "bin", "create_new_assignment")
 
     # Path to example assignment
-    pathToExample = path.join(config.kianPath, "examples", "assignments", exampleName)
+    pathToExample = path.join(config.kienPath, "examples", "assignments", exampleName)
 
     # Make sure example exists
     if not path.exists(pathToExample):
@@ -148,7 +148,7 @@ def fakeUploadSubmission(config, args):
 
     assignmentID = args[0]
     student = args[1]
-    testSubmissionPath = path.join(config.kianPath, "examples","submissions",args[2])
+    testSubmissionPath = path.join(config.kienPath, "examples","submissions",args[2])
 
     # Get the path where this directory should be "uploaded" to, then figure
     # out which submission number the student is on
