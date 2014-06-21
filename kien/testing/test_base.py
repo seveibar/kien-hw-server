@@ -74,7 +74,7 @@ def assignmentFixture(request, config):
 
     # Clean up the directory before and after
     cleanup()
-    #request.addfinalizer(cleanup)
+    request.addfinalizer(cleanup)
 
 # This fixture is for modifying or working with the data/submissions directory
 @pytest.fixture(scope="function")
@@ -88,7 +88,7 @@ def submissionFixture(request, config):
 
     # Clean up the directory before and after
     cleanup()
-    #request.addfinalizer(cleanup)
+    request.addfinalizer(cleanup)
 
 # This fixture is for modifying or working with the data/results directory
 @pytest.fixture(scope="function")
@@ -102,7 +102,7 @@ def resultsFixture(request, config):
 
     # Clean up the directory before and after
     cleanup()
-    #request.addfinalizer(cleanup)
+    request.addfinalizer(cleanup)
 
 
 # This fixture is for tests that will need the kien config
