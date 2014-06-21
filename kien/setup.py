@@ -180,7 +180,7 @@ def configureSite(config):
 def createClassFile(config):
     print "Creating class file"
 
-    defaultClassFilePath = path.join(config.kianPath, "examples","defaults","class.json")
+    defaultClassFilePath = path.join(config.kienPath, "examples","defaults","class.json")
     destClassFilePath = path.join(config.dataPath,"coursedata","class.json")
 
     print "Parsing ",defaultClassFilePath, " and writing to ", destClassFilePath
