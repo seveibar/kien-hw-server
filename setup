@@ -1,3 +1,6 @@
 #!/bin/bash
 
+# This setup script will create the necessary repositories to get the Kien
+# server up and running
+
 python "$(dirname $0)/kien/setup.py" $@
