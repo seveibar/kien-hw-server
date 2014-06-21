@@ -29,7 +29,7 @@
             "details": "",
             "compile": "g++ student/main.cpp -o student/main",
             "run": "./main > main_output.txt",
-            "grade": "instructor/core/diff instructor/main_output.txt student/main_output.txt results/difference.json",
+            "grade": "instructor/core/diff student/main_output.txt instructor/main_output.txt results/difference.json",
             "points": 5,
             "hidden": false,
             "extracredit": false,

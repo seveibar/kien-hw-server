@@ -1,5 +1,9 @@
 #!/usr/bin/python
 
+"""
+This file is designed to be run by py.test to test the "base" server directory.
+"""
+
 import setup.config
 import methods as test
 
